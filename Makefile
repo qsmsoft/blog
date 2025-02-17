@@ -1,10 +1,13 @@
+# YAML file path
+filePath ?= ./config/config-local.yaml
+
 # database variables
-DB_USER ?= $(shell yq e '.postgres.PostgresqlUser' /config/config-local.yaml)
-DB_PASSWORD ?= $(shell yq e '.postgres.PostgresqlPassword' /config/config-local.yaml)
-DB_HOST ?= $(shell yq e '.postgres.PostgresqlHost' /config/config-local.yaml)
-DB_PORT ?= $(shell yq e '.postgres.PostgresqlPort' /config/config-local.yaml)
-DB_NAME ?= $(shell yq e '.postgres.PostgresqlDBName' /config/config-local.yaml)
-DB_SSL_MODE ?= $(shell yq e '.postgres.PostgresqlSSLMode' /config/config-local.yaml)
+DB_USER ?= $(shell yq e '.postgres.PostgresqlUser' $(filePath))
+DB_PASSWORD ?= $(shell yq e '.postgres.PostgresqlPassword' $(filePath))
+DB_HOST ?= $(shell yq e '.postgres.PostgresqlHost' $(filePath))
+DB_PORT ?= $(shell yq e '.postgres.PostgresqlPort' $(filePath))
+DB_NAME ?= $(shell yq e '.postgres.PostgresqlDBName' $(filePath))
+DB_SSL_MODE ?= $(shell yq e '.postgres.PostgresqlSSLMode' $(filePath))
 
 # environment variables
 dns ?= postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL_MODE)
