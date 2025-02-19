@@ -16,11 +16,7 @@ const (
 	connMaxIdleTime = 20
 )
 
-type Database struct {
-	Conn *sqlx.DB
-}
-
-func NewDatabase(cfg *config.Config) (*Database, error) {
+func NewPsqlDB(cfg *config.Config) (*sqlx.DB, error) {
 	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=%s",
 		cfg.Postgres.PostgresqlUser, cfg.Postgres.PostgresqlPassword, cfg.Postgres.PostgresqlHost, cfg.Postgres.PostgresqlPort, cfg.Postgres.PostgresqlDBName, cfg.Postgres.PostgresqlSSLMode)
 
@@ -37,13 +33,5 @@ func NewDatabase(cfg *config.Config) (*Database, error) {
 		return nil, err
 	}
 
-	return &Database{Conn: db}, nil
-}
-
-func (db *Database) Close() {
-	if err := db.Conn.Close(); err != nil {
-		log.Printf("failed to close database connection: %v", err)
-	} else {
-		log.Println("database connection closed")
-	}
+	return db, nil
 }
