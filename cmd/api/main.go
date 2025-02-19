@@ -1,8 +1,11 @@
 package main
 
 import (
+	"github.com/jmoiron/sqlx"
 	"github.com/qsmsoft/blog/config"
-	"github.com/qsmsoft/blog/internal/app"
+	"github.com/qsmsoft/blog/internal/server"
+	"github.com/qsmsoft/blog/pkg/db/postgres"
+	"github.com/qsmsoft/blog/pkg/logger"
 	"github.com/qsmsoft/blog/pkg/utils"
 	"log"
 	"os"
@@ -24,7 +27,27 @@ func main() {
 		log.Fatalf("ParseConfig: %v", err)
 	}
 
-	e := app.SetupApp(cfg)
+	appLogger := logger.NewApiLogger(cfg)
 
-	e.Logger.Fatal(e.Start(":" + cfg.Server.Port))
+	appLogger.InitLogger()
+	appLogger.Infof("AppVersion: %s, LogLevel: %s", cfg.Server.AppVersion, cfg.Logger.Level)
+
+	psqlDB, err := postgres.NewPsqlDB(cfg)
+	if err != nil {
+		appLogger.Fatalf("Postgresql init: %s", err)
+	} else {
+		appLogger.Infof("Postgres connected, Status: %#v", psqlDB.Stats())
+	}
+	defer func(psqlDB *sqlx.DB) {
+		err := psqlDB.Close()
+		if err != nil {
+			appLogger.Fatalf("Postgresql close: %s", err)
+		}
+	}(psqlDB)
+
+	s := server.NewServer(cfg, psqlDB)
+	if err = s.Run(); err != nil {
+		log.Fatal(err)
+	}
+
 }

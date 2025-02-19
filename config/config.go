@@ -4,17 +4,32 @@ import (
 	"errors"
 	"github.com/spf13/viper"
 	"log"
+	"time"
 )
 
 // Config is App config struct
 type Config struct {
 	Server   ServerConfig
+	Logger   LoggerConfig
 	Postgres PostgresConfig
 }
 
 // ServerConfig is server config struct
 type ServerConfig struct {
-	Port string
+	AppVersion   string
+	Port         string
+	Mode         string
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+}
+
+// LoggerConfig is logger config struct
+type LoggerConfig struct {
+	Development       bool
+	DisableCaller     bool
+	DisableStacktrace bool
+	Encoding          string
+	Level             string
 }
 
 // PostgresConfig is postgres config struct
