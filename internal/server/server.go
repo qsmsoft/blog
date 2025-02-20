@@ -25,11 +25,12 @@ type Server struct {
 	logger logger.Logger
 }
 
-func NewServer(cfg *config.Config, db *sqlx.DB) *Server {
+func NewServer(cfg *config.Config, db *sqlx.DB, logger logger.Logger) *Server {
 	return &Server{
-		echo: echo.New(),
-		cfg:  cfg,
-		db:   db,
+		echo:   echo.New(),
+		cfg:    cfg,
+		db:     db,
+		logger: logger,
 	}
 }
 func (s *Server) Run() error {
@@ -59,6 +60,6 @@ func (s *Server) Run() error {
 	ctx, shutdown := context.WithTimeout(context.Background(), ctxTimeout*time.Second)
 	defer shutdown()
 
-	s.logger.Infof("Server Exied Properly")
+	s.logger.Info("Server Exited Properly")
 	return s.echo.Server.Shutdown(ctx)
 }

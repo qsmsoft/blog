@@ -1,6 +1,6 @@
 server:
   AppVersion: 1.0.0
-  Port: 3000
+  Port: :3000
   Mode: development
   ReadTimeout: 5
   WriteTimeout: 5

@@ -39,7 +39,7 @@ type PostgresConfig struct {
 	PostgresqlUser     string
 	PostgresqlPassword string
 	PostgresqlDBName   string
-	PostgresqlSSLMode  string
+	PostgresqlSSLMode  bool
 	PostgresqlDriver   string
 }
 
