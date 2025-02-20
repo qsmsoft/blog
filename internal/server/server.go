@@ -48,7 +48,7 @@ func (s *Server) Run() error {
 		}
 	}()
 
-	if err := s.MapHandlers(); err != nil {
+	if err := s.MapHandlers(s.echo); err != nil {
 		return err
 	}
 
