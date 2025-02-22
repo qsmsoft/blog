@@ -17,12 +17,13 @@ const (
 )
 
 func NewPsqlDB(cfg *config.Config) (*sqlx.DB, error) {
-	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=disable",
+	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=%s",
 		cfg.Postgres.PostgresqlUser,
 		cfg.Postgres.PostgresqlPassword,
 		cfg.Postgres.PostgresqlHost,
 		cfg.Postgres.PostgresqlPort,
 		cfg.Postgres.PostgresqlDBName,
+		cfg.Postgres.PostgresqlSSLMode,
 	)
 
 	db, err := sqlx.Connect(cfg.Postgres.PostgresqlDriver, dsn)
