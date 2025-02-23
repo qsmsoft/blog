@@ -21,6 +21,7 @@ type ServerConfig struct {
 	Mode         string
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
+	JwtSecretKey string
 }
 
 // LoggerConfig is logger config struct
