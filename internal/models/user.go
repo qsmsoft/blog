@@ -77,3 +77,7 @@ type UserWithToken struct {
 	User  *User  `json:"user"`
 	Token string `json:"token"`
 }
+
+func (u *User) SanitizePassword() {
+	u.Password = ""
+}
