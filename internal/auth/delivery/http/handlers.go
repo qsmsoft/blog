@@ -29,9 +29,10 @@ type authHandlers struct {
 // NewAuthHandlers is auth handlers constructor
 func NewAuthHandlers(cfg *config.Config, authUC auth.UseCase, sessionUC session.SessionUC, logger logger.Logger) auth.Handlers {
 	return &authHandlers{
-		cfg:    cfg,
-		authUC: authUC,
-		logger: logger,
+		cfg:       cfg,
+		authUC:    authUC,
+		sessionUC: sessionUC,
+		logger:    logger,
 	}
 }
 
