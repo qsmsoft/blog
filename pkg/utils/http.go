@@ -1,9 +1,15 @@
 package utils
 
 import (
+	"context"
 	"github.com/labstack/echo/v4"
+	"github.com/qsmsoft/blog/config"
 	"github.com/qsmsoft/blog/pkg/logger"
+	"net/http"
 )
+
+// ReqIDCtxKey is a key used for the Request ID in context
+type ReqIDCtxKey struct{}
 
 // GetRequestID returns request id from echo context
 func GetRequestID(c echo.Context) string {
@@ -31,6 +37,11 @@ func ReadRequest(ctx echo.Context, request interface{}) error {
 	return validate.StructCtx(ctx.Request().Context(), request)
 }
 
+// GetRequestCtx returns context  with request id
+func GetRequestCtx(c echo.Context) context.Context {
+	return context.WithValue(c.Request().Context(), ReqIDCtxKey{}, GetRequestID(c))
+}
+
 // LogResponseError returns error response with logging error for echo context
 func LogResponseError(ctx echo.Context, logger logger.Logger, err error) {
 	logger.Errorf(
@@ -39,4 +50,44 @@ func LogResponseError(ctx echo.Context, logger logger.Logger, err error) {
 		GetIPAddress(ctx),
 		err,
 	)
+}
+
+// ConfigureJWTCookie configures jwt cookie
+func ConfigureJWTCookie(cfg *config.Config, jwtToken string) *http.Cookie {
+	return &http.Cookie{
+		Name:       cfg.Cookie.Name,
+		Value:      jwtToken,
+		Path:       "/",
+		RawExpires: "",
+		MaxAge:     cfg.Cookie.MaxAge,
+		Secure:     cfg.Cookie.Secure,
+		HttpOnly:   cfg.Cookie.HTTPOnly,
+		SameSite:   0,
+	}
+}
+
+// CreateSessionCookie creates jwt cookie
+func CreateSessionCookie(cfg *config.Config, session string) *http.Cookie {
+	return &http.Cookie{
+		Name:  cfg.Session.Name,
+		Value: session,
+		Path:  "/",
+		// Domain: "/",
+		// Expires:    time.Now().Add(1 * time.Minute),
+		RawExpires: "",
+		MaxAge:     cfg.Session.Expire,
+		Secure:     cfg.Cookie.Secure,
+		HttpOnly:   cfg.Cookie.HTTPOnly,
+		SameSite:   0,
+	}
+}
+
+// DeleteSessionCookie deletes session cookie
+func DeleteSessionCookie(c echo.Context, sessionName string) {
+	c.SetCookie(&http.Cookie{
+		Name:   sessionName,
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	})
 }
