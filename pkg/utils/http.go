@@ -3,8 +3,11 @@ package utils
 import (
 	"context"
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 	"github.com/qsmsoft/blog/config"
+	"github.com/qsmsoft/blog/pkg/httpErrors"
 	"github.com/qsmsoft/blog/pkg/logger"
+	"mime/multipart"
 	"net/http"
 )
 
@@ -37,9 +40,35 @@ func ReadRequest(ctx echo.Context, request interface{}) error {
 	return validate.StructCtx(ctx.Request().Context(), request)
 }
 
+// ReadImage returns image
+func ReadImage(ctx echo.Context, field string) (*multipart.FileHeader, error) {
+	image, err := ctx.FormFile(field)
+	if err != nil {
+		return nil, errors.WithMessage(err, "ctx.FormFile")
+	}
+
+	// Check content type of image
+	if err = CheckImageContentType(image); err != nil {
+		return nil, err
+	}
+
+	return image, nil
+}
+
 // GetRequestCtx returns context  with request id
 func GetRequestCtx(c echo.Context) context.Context {
 	return context.WithValue(c.Request().Context(), ReqIDCtxKey{}, GetRequestID(c))
+}
+
+// ErrResponseWithLog returns response with logging error for echo context
+func ErrResponseWithLog(ctx echo.Context, logger logger.Logger, err error) error {
+	logger.Errorf(
+		"ErrResponseWithLog, RequestID: %s, IPAddress: %s, Error: %s",
+		GetRequestID(ctx),
+		GetIPAddress(ctx),
+		err,
+	)
+	return ctx.JSON(httpErrors.ErrorResponse(err))
 }
 
 // LogResponseError returns error response with logging error for echo context
@@ -90,4 +119,27 @@ func DeleteSessionCookie(c echo.Context, sessionName string) {
 		Path:   "/",
 		MaxAge: -1,
 	})
+}
+
+var allowedImagesContentTypes = map[string]string{
+	"image/bmp":                "bmp",
+	"image/gif":                "gif",
+	"image/png":                "png",
+	"image/jpeg":               "jpeg",
+	"image/jpg":                "jpg",
+	"image/svg+xml":            "svg",
+	"image/webp":               "webp",
+	"image/tiff":               "tiff",
+	"image/vnd.microsoft.icon": "ico",
+}
+
+func CheckImageFileContentType(fileContent []byte) (string, error) {
+	contentType := http.DetectContentType(fileContent)
+
+	extension, ok := allowedImagesContentTypes[contentType]
+	if !ok {
+		return "", errors.New("this content type is not allowed")
+	}
+
+	return extension, nil
 }
