@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"github.com/qsmsoft/blog/config"
+	"github.com/qsmsoft/blog/internal/models"
 	"github.com/qsmsoft/blog/pkg/httpErrors"
 	"github.com/qsmsoft/blog/pkg/logger"
 	"mime/multipart"
@@ -25,11 +26,6 @@ func GetConfigPath(configPath string) string {
 		return "./config/config-docker"
 	}
 	return "./config/config-local"
-}
-
-// GetIPAddress returns user ip address
-func GetIPAddress(c echo.Context) string {
-	return c.Request().RemoteAddr
 }
 
 // ReadRequest returns request body and validate
@@ -119,6 +115,24 @@ func DeleteSessionCookie(c echo.Context, sessionName string) {
 		Path:   "/",
 		MaxAge: -1,
 	})
+}
+
+// UserCtxKey is a key used for the User object in the context
+type UserCtxKey struct{}
+
+// GetUserFromCtx gets user from context
+func GetUserFromCtx(ctx context.Context) (*models.User, error) {
+	user, ok := ctx.Value(UserCtxKey{}).(*models.User)
+	if !ok {
+		return nil, httpErrors.Unauthorized
+	}
+
+	return user, nil
+}
+
+// GetIPAddress returns user ip address
+func GetIPAddress(c echo.Context) string {
+	return c.Request().RemoteAddr
 }
 
 var allowedImagesContentTypes = map[string]string{
