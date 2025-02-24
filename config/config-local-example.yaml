@@ -4,6 +4,8 @@ server:
   Mode: development
   ReadTimeout: 5
   WriteTimeout: 5
+  JwtSecretKey: superSecret
+  CSRF: true
 
 logger:
   Development: true
