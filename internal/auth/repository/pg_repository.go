@@ -9,6 +9,7 @@ import (
 	"github.com/qsmsoft/blog/internal/auth"
 	"github.com/qsmsoft/blog/internal/models"
 	"github.com/qsmsoft/blog/pkg/utils"
+	"log"
 )
 
 type authRepo struct {
@@ -88,7 +89,7 @@ func (r *authRepo) FindByName(ctx context.Context, name string, query *utils.Pag
 	defer func(rows *sqlx.Rows) {
 		err := rows.Close()
 		if err != nil {
-
+			log.Fatalf("Failed to close rows: %v", err)
 		}
 	}(rows)
 
