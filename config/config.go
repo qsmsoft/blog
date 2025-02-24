@@ -12,6 +12,9 @@ type Config struct {
 	Server   ServerConfig
 	Logger   LoggerConfig
 	Postgres PostgresConfig
+	Redis    RedisConfig
+	Session  SessionConfig
+	Cookie   CookieConfig
 }
 
 // ServerConfig is server config struct
@@ -42,6 +45,34 @@ type PostgresConfig struct {
 	PostgresqlDBName   string
 	PostgresqlSSLMode  string
 	PostgresqlDriver   string
+}
+
+// RedisConfig is redis config struct
+type RedisConfig struct {
+	RedisAddr      string
+	RedisPassword  string
+	RedisDB        string
+	RedisDefaultdb string
+	MinIdleConns   int
+	PoolSize       int
+	PoolTimeout    int
+	Password       string
+	DB             int
+}
+
+// CookieConfig config
+type CookieConfig struct {
+	Name     string
+	MaxAge   int
+	Secure   bool
+	HTTPOnly bool
+}
+
+// SessionConfig config
+type SessionConfig struct {
+	Prefix string
+	Name   string
+	Expire int
 }
 
 // LoadConfig loads config file from given path
