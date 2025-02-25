@@ -15,7 +15,7 @@ CREATE TABLE users
     role        VARCHAR(10)              NOT NULL DEFAULT 'user',
     avatar      VARCHAR(512),
     created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    updated_ate TIMESTAMP WITH TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
     login_date  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 -- +goose StatementEnd

@@ -39,7 +39,7 @@ func NewAuthUseCase(cfg *config.Config, authRepo auth.PostgresRepository, redisR
 
 func (u *authUC) Register(ctx context.Context, user *models.User) (*models.UserWithToken, error) {
 	existsUser, err := u.authRepo.FindByEmail(ctx, user)
-	if existsUser == nil || err != nil {
+	if existsUser != nil || err == nil {
 		return nil, httpErrors.NewRestErrorWithMessage(http.StatusBadRequest, httpErrors.ErrEmailAlreadyExists, nil)
 	}
 

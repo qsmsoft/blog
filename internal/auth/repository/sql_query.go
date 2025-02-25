@@ -1,8 +1,8 @@
 package repository
 
 const (
-	createUserQuery = `INSERT INTO users (first_name, last_name, email, password, role, avatar, created_at, updated_at, login_date)
-							VALUES ($1, $2, $3, $4, COALESCE(NULLIF($5, ''), 'user'), $6, $7, $8, $9)
+	createUserQuery = `INSERT INTO users (first_name, last_name, email, password, role, avatar)
+							VALUES ($1, $2, $3, $4, COALESCE(NULLIF($5, ''), 'user'), $6)
 							RETURNING *`
 
 	updateUserQuery = `UPDATE users  SET first_name = COALESCE(NULLIF($1, ''), first_name),
@@ -34,7 +34,7 @@ const (
 				 FROM users 
 				 ORDER BY COALESCE(NULLIF($1, ''), first_name) OFFSET $2 LIMIT $3`
 
-	findUserByEmail = `SELECT user_id, first_name, last_name, email, role, avatar,created_at, updated_at, login_date, password
+	findUserByEmail = `SELECT id, first_name, last_name, email, role, avatar,created_at, updated_at, login_date, password
 				 		FROM users 
 				 		WHERE email = $1`
 )
