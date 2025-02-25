@@ -15,6 +15,7 @@ type Config struct {
 	Redis    RedisConfig
 	Session  SessionConfig
 	Cookie   CookieConfig
+	AWS      AWS
 }
 
 // ServerConfig is server config struct
@@ -75,6 +76,15 @@ type SessionConfig struct {
 	Prefix string
 	Name   string
 	Expire int
+}
+
+// AWS S3
+type AWS struct {
+	Endpoint       string
+	MinioAccessKey string
+	MinioSecretKey string
+	UseSSL         bool
+	MinioEndpoint  string
 }
 
 // LoadConfig loads config file from given path
