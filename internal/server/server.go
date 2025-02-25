@@ -4,8 +4,10 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	"github.com/minio/minio-go/v7"
 	"github.com/qsmsoft/blog/config"
 	"github.com/qsmsoft/blog/pkg/logger"
+	"github.com/redis/go-redis/v9"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,18 +21,22 @@ const (
 )
 
 type Server struct {
-	echo   *echo.Echo
-	cfg    *config.Config
-	db     *sqlx.DB
-	logger logger.Logger
+	echo        *echo.Echo
+	cfg         *config.Config
+	db          *sqlx.DB
+	redisClient *redis.Client
+	awsClient   *minio.Client
+	logger      logger.Logger
 }
 
-func NewServer(cfg *config.Config, db *sqlx.DB, logger logger.Logger) *Server {
+func NewServer(cfg *config.Config, db *sqlx.DB, redisClient *redis.Client, awsClient *minio.Client, logger logger.Logger) *Server {
 	return &Server{
-		echo:   echo.New(),
-		cfg:    cfg,
-		db:     db,
-		logger: logger,
+		echo:        echo.New(),
+		cfg:         cfg,
+		db:          db,
+		redisClient: redisClient,
+		awsClient:   awsClient,
+		logger:      logger,
 	}
 }
 func (s *Server) Run() error {
