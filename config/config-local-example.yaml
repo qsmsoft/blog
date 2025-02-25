@@ -6,6 +6,7 @@ server:
   WriteTimeout: 5
   JwtSecretKey: superSecret
   CSRF: true
+  Debug: false
 
 logger:
   Development: true

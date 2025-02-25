@@ -26,6 +26,7 @@ type ServerConfig struct {
 	WriteTimeout time.Duration
 	JwtSecretKey string
 	CSRF         bool
+	Debug        bool
 }
 
 // LoggerConfig is logger config struct
