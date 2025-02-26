@@ -138,7 +138,7 @@ func (mw *MiddlewareManager) OwnerOrAdminMiddleware() echo.MiddlewareFunc {
 				return next(c)
 			}
 
-			if user.ID.String() != c.Param("user_id") {
+			if user.ID.String() != c.Param("id") {
 				mw.logger.Errorf("Error c.Get(user) RequestID: %s, UserID: %s, ERROR: %s,",
 					utils.GetRequestID(c),
 					user.ID.String(),

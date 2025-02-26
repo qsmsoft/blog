@@ -314,7 +314,7 @@ func (h *authHandlers) UploadAvatar() echo.HandlerFunc {
 
 func (h *authHandlers) GetCSRFToken() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sid, ok := c.Get("id").(string)
+		sid, ok := c.Get("sid").(string)
 		if !ok {
 			utils.LogResponseError(c, h.logger, httpErrors.NewUnauthorizedError(httpErrors.Unauthorized))
 			return utils.ErrResponseWithLog(c, h.logger, httpErrors.NewUnauthorizedError(httpErrors.Unauthorized))

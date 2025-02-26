@@ -11,7 +11,7 @@ const (
                   			role = COALESCE(NULLIF($4, ''), role),
                   			avatar = COALESCE(NULLIF($5, ''), avatar),
                   			updated_at = now()
-						WHERE user_id = $7
+						WHERE id = $6
 						RETURNING *`
 
 	deleteUserQuery = `DELETE FROM users WHERE id = $1`
