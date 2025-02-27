@@ -17,7 +17,6 @@ type User struct {
 	Avatar    *string   `json:"avatar,omitempty" db:"avatar" redis:"avatar" validate:"omitempty,lte=512,url"`
 	CreatedAt time.Time `json:"created_at,omitempty" db:"created_at" redis:"created_at"`
 	UpdatedAt time.Time `json:"updated_at,omitempty" db:"updated_at" redis:"updated_at"`
-	LoginDate time.Time `json:"login_date" db:"login_date" redis:"login_date"`
 }
 
 func (u *User) HashPassword() error {

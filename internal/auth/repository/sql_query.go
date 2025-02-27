@@ -15,13 +15,13 @@ const (
 
 	deleteUserQuery = `DELETE FROM users WHERE id = $1`
 
-	getUserQuery = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at, login_date  
+	getUserQuery = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at  
 					 FROM users 
 					 WHERE id = $1`
 
 	getTotalCount = `SELECT COUNT(id) FROM users WHERE first_name ILIKE '%' || $1 || '%' or last_name ILIKE '%' || $1 || '%'`
 
-	findUsers = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at, login_date 
+	findUsers = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at 
 				  FROM users 
 				  WHERE first_name ILIKE '%' || $1 || '%' or last_name ILIKE '%' || $1 || '%'
 				  ORDER BY first_name, last_name
@@ -29,11 +29,11 @@ const (
 
 	getTotal = `SELECT COUNT(id) FROM users`
 
-	getUsers = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at, login_date
+	getUsers = `SELECT id, first_name, last_name, email, role, avatar, created_at, updated_at
 				 FROM users 
 				 ORDER BY COALESCE(NULLIF($1, ''), first_name) OFFSET $2 LIMIT $3`
 
-	findUserByEmail = `SELECT id, first_name, last_name, email, role, avatar,created_at, updated_at, login_date, password
+	findUserByEmail = `SELECT id, first_name, last_name, email, role, avatar,created_at, updated_at, password
 				 		FROM users 
 				 		WHERE email = $1`
 )
