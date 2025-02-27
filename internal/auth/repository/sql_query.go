@@ -10,7 +10,6 @@ const (
                   			email = COALESCE(NULLIF($3, ''), email),
                   			role = COALESCE(NULLIF($4, ''), role),
                   			avatar = COALESCE(NULLIF($5, ''), avatar),
-                  			updated_at = now()
 						WHERE id = $6
 						RETURNING *`
 
