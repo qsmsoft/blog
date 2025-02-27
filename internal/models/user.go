@@ -11,7 +11,7 @@ type User struct {
 	ID        uuid.UUID `json:"id" db:"id" redis:"id" validate:"omitempty"`
 	FirstName string    `json:"first_name" db:"first_name" redis:"first_name" validate:"required,lte=30"`
 	LastName  string    `json:"last_name" db:"last_name" redis:"last_name" validate:"required,lte=30"`
-	Email     string    `json:"email,omitempty" db:"email" redis:"email" validate:"required,lte=60"`
+	Email     string    `json:"email,omitempty" db:"email" redis:"email" validate:"required,email,lte=60"`
 	Password  string    `json:"password,omitempty" db:"password" redis:"password" validate:"omitempty,required,gte=6"`
 	Role      *string   `json:"role,omitempty" db:"role" redis:"role" validate:"omitempty,lte=10"`
 	Avatar    *string   `json:"avatar,omitempty" db:"avatar" redis:"avatar" validate:"omitempty,lte=512,url"`
